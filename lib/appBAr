@@ -1,0 +1,67 @@
+AppBar(
+          toolbarHeight: 65,
+          bottom: const TabBar(
+            tabAlignment: TabAlignment.center,
+            labelPadding: EdgeInsets.all(5),
+            labelStyle:TextStyle(fontWeight: FontWeight.w600,fontSize: 21,fontFamily: 'SourceSansPro', color: Colors.black),
+            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400,fontSize: 16,fontFamily: 'SourceSansPro', color:Color(0Xff8C8E90)),
+            unselectedLabelColor: Color(0Xff8C8E90),
+            isScrollable: true,
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorColor: Colors.red,
+              tabs:[
+                Tab(child: Text('Following',),),
+                Tab(child: Text('For you',),),
+                Tab(child: Text('Politics',)),
+                Tab(child: Text('Club World Cup',)),
+                Tab(child: Text('Entertainment')),
+                Tab(child: Text('Football',)),
+                Tab(child: Text('Business',)),
+                Tab(child: Text('Relationships')),
+                Tab(child: Text('Fashion&Beauty',)),
+                Tab(child: Text('LifeStyle',)),
+                Tab(child: Text('Headlines')),
+                Tab(child: Text('Sports',)),
+                Tab(child: Text('Technology')),
+                Tab(child: Text('Motoring')),
+                Tab(child: Text('Career&Jobs',)),
+                Tab(child: Text('Travel',))
+              ]),
+          title: Container(
+            padding: const EdgeInsets.only(left: 5,right: 5),
+            // alignment: Alignment.topLeft,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                // Container(
+                //   padding: EdgeInsets.all(5),
+                //   color: Colors.red,
+                //   child: Text('Breaking News'),
+                // ),
+                SizedBox(width: 25,),
+                 TextField(
+                      controller:_searchController,
+                      textAlign: TextAlign.start,
+                      showCursor: false,
+                      decoration: const InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(9)),
+                              borderSide: BorderSide(color:Color(0Xfff4f3ee))
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(9)),
+                            borderSide: BorderSide(color:Color(0Xffac46a1)
+                            ),
+                          ),
+                          prefixIcon: Icon(Icons.search_rounded, color:Color(0Xffcfd2cd),),
+                        hintText: "Reality TV star Kim Wood...",
+                      ),
+                    ),
+
+                // Image.asset('assets/Icons/file.png',width: 30,height: 30,color: Color(0Xff8C8E90)),
+                // // SizedBox(width: 25,),
+                // Image.asset('assets/Icons/edit.png',width: 30,height: 30,color: Color(0Xff8C8E90),),
+              ],
+            ),
+          ),
+        ),
