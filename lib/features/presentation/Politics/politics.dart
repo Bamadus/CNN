@@ -1,21 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cnn/features/domain/models/news.dart';
 import 'package:cnn/features/data/services/api_services.dart';
+import 'package:intl/intl.dart';
 
-void main(){
-  runApp(const Politics());
-}
 
-class Politics extends StatelessWidget{
-  const Politics({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        home: NewsPage(),
-    );
-  }
-}
 
 class NewsPage extends StatelessWidget{
   const NewsPage({super.key});
@@ -55,7 +43,7 @@ class NewsPage extends StatelessWidget{
             }else if(!snapshot.hasData || snapshot.data!.isEmpty){
               return const Center(child: Text('No news available'));
             }
-
+print(snapshot.data);
             final news= snapshot.data!;
             return ListView.builder(
               itemCount: news.length,
@@ -63,11 +51,10 @@ class NewsPage extends StatelessWidget{
                 final newsitem = news[index];
                 return Card(
                   child: ListTile(
-                    leading: newsitem.image.isNotEmpty ? Image.network(newsitem.image, width: 79, fit: BoxFit.cover,) : null,
-                    title: Text(newsitem.headlines),
-                    subtitle: Text(newsitem.datetime as String),
-                  )
-                );
+                    leading: newsitem.image!=null ? Image.network(newsitem.image!, width: 79, fit: BoxFit.cover,) : null,
+                    title: Text(newsitem.headlines.toString()),
+                    subtitle: Text(DateFormat('yyyy-MM-dd').format(newsitem.datetime!)),),
+                  );
                 }
             );
           },

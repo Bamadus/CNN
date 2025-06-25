@@ -1,37 +1,36 @@
 class News{
-  final String category;
-  final DateTime datetime;
-  final String headlines;
-  final int id;
-  final String image;
-  final String related;
-  final String source;
-  final String summary;
-  final String url;
+   String? category;
+   DateTime? datetime;
+   String? headlines;
+   int? id;
+   String? image;
+  String? related;
+   String? source;
+    String? summary;
+   String? url;
 
   News({
-    required this.category,
-    required this.datetime,
-    required this.headlines,
-    required this.id,
-    required this.image,
-    required this.related,
-    required this.source,
-    required this.summary,
-    required this.url,
+     this.category,
+     this.datetime,
+     this.headlines,
+     this.id,
+     this.image,
+     this.related,
+     this.source,
+     this.summary,
+     this.url,
 });
-  factory News.fromJson(Map<String, dynamic> json){
-    return News(
-      category: json['category'],
-      datetime: json['datetime'] != null ? DateTime.parse(json['datetime']) : DateTime.now(),
-      headlines: json['headlines'] ?? "No Headlines",
-      id: json['id'] ?? "No ID",
-      image: json['image']?.toString() ?? "",
-      related: json['related']?.toString() ?? "",
-      source: json['source']?.toString() ?? "Unknown Source",
-      summary: json['summary']?.toString() ?? "No Summary",
-      url: json['url']?.toString() ?? "No URL",
-    );
+   News.fromJson(Map<String, dynamic> json){
+    category= json['category'];
+    datetime= DateTime.fromMillisecondsSinceEpoch(json['datetime']);
+    headlines= json['headlines'] ?? "No Headlines";
+    id= json['id'] ?? 0;
+    print('=================');
+    image= json['image']?.toString() ?? "";
+    related= json['related']?.toString() ?? "";
+    source= json['source']?.toString() ?? "Unknown Source";
+    summary= json['summary']?.toString() ?? "No Summary";
+    url= json['url']?.toString() ?? "No URL";
   }
 }
 
