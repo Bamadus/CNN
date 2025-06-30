@@ -1,7 +1,7 @@
 class News{
    String? category;
    DateTime? datetime;
-   String? headlines;
+   String? headline;
    int? id;
    String? image;
   String? related;
@@ -12,7 +12,7 @@ class News{
   News({
      this.category,
      this.datetime,
-     this.headlines,
+     this.headline,
      this.id,
      this.image,
      this.related,
@@ -22,8 +22,8 @@ class News{
 });
    News.fromJson(Map<String, dynamic> json){
     category= json['category'];
-    datetime= DateTime.fromMillisecondsSinceEpoch(json['datetime']);
-    headlines= json['headlines'] ?? "No Headlines";
+    datetime= DateTime.fromMillisecondsSinceEpoch((json['datetime']?? 0) * 1000);
+    headline= json['headline'] ?? "No Headlines";
     id= json['id'] ?? 0;
     print('=================');
     image= json['image']?.toString() ?? "";
