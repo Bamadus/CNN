@@ -22,10 +22,16 @@ class News{
 });
    News.fromJson(Map<String, dynamic> json){
     category= json['category'];
-    datetime= DateTime.fromMillisecondsSinceEpoch((json['datetime']?? 0) * 1000);
+    // datetime= DateTime.fromMillisecondsSinceEpoch(json['datetime'] * 1000);
+    int timestamp = json['datetime'] ?? 0;
+    if (timestamp > 0) {
+      datetime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    } else {
+      print("⚠️ Invalid datetime in JSON: ${json['datetime']}");
+      datetime = DateTime.now(); // fallback
+    }
     headline= json['headline'] ?? "No Headlines";
     id= json['id'] ?? 0;
-    print('=================');
     image= json['image']?.toString() ?? "";
     related= json['related']?.toString() ?? "";
     source= json['source']?.toString() ?? "Unknown Source";
