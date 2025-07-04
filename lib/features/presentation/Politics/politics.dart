@@ -39,7 +39,7 @@ class _NewsPageState extends State<NewsPage> {
             icon: Icon(Unselected_like),
             selectedIcon: Icon(active_like),
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.messenger)),
+          IconButton(onPressed: (){}, icon: const Icon(Icons.messenger)),
         ],
       ),
     );
@@ -122,7 +122,7 @@ class _NewsPageState extends State<NewsPage> {
                               title: Text(newsitem.headline.toString()),
                               subtitle: Text(
                                 DateFormat(
-                                  'EEEE,MMM d,y',
+                                  'EEEE,MMM d,y'
                                 ).format(newsitem.datetime!),
                               ),
                               trailing: newsitem.image != null
@@ -130,7 +130,7 @@ class _NewsPageState extends State<NewsPage> {
                                       newsitem.image!,
                                       width: 79,
                                       fit: BoxFit.cover,
-                                    )
+                                )
                                   : null,
                               dense: true,
                               contentPadding: EdgeInsets.zero,
@@ -138,17 +138,25 @@ class _NewsPageState extends State<NewsPage> {
                               minVerticalPadding: 0,
                             ),
                           ),
-                          InkWell(
-                            key: clickKey,
-                            onTap: () {
-                              setState(() {
-                                is_liked = !is_liked;
-                              });
-                            },
-                            child: is_liked
-                                ? Icon(Unselected_like)
-                                : Icon(active_like),
-                          ),
+                          IconButton(onPressed: (){
+                            setState(() {
+                              newsitem.isLiked = !newsitem.isLiked;
+                            });
+                          },
+                              icon: Icon(newsitem.isLiked == false ? Unselected_like : active_like),
+                            color: newsitem.isLiked == false ? Colors.black45 :Colors.red,
+                                  )
+                          // InkWell(
+                          //   key: clickKey,
+                          //   onTap: () {
+                          //     setState(() {
+                          //       is_liked = !is_liked;
+                          //     });
+                          //   },
+                          //   child: is_liked
+                          //       ? Icon(Unselected_like)
+                          //       : Icon(active_like),
+                          // ),
                         ],
                       ),
                     ),
@@ -159,3 +167,4 @@ class _NewsPageState extends State<NewsPage> {
     );
   }
 }
+

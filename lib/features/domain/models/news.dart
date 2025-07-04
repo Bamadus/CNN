@@ -8,6 +8,7 @@ class News{
    String? source;
     String? summary;
    String? url;
+   bool isLiked = false;
 
   News({
      this.category,
@@ -19,6 +20,7 @@ class News{
      this.source,
      this.summary,
      this.url,
+    this.isLiked = false,
 });
    News.fromJson(Map<String, dynamic> json){
     category= json['category'];
@@ -27,7 +29,7 @@ class News{
     if (timestamp > 0) {
       datetime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
     } else {
-      print("⚠️ Invalid datetime in JSON: ${json['datetime']}");
+      print("⚠ Invalid datetime in JSON: ${json['datetime']}");
       datetime = DateTime.now(); // fallback
     }
     headline= json['headline'] ?? "No Headlines";
@@ -37,6 +39,7 @@ class News{
     source= json['source']?.toString() ?? "Unknown Source";
     summary= json['summary']?.toString() ?? "No Summary";
     url= json['url']?.toString() ?? "No URL";
+    isLiked = false;
   }
 }
 
