@@ -9,6 +9,8 @@ class News{
     String? summary;
    String? url;
    bool isLiked = false;
+   bool bookmark = false;
+   int likes =0;
 
   News({
      this.category,
@@ -21,6 +23,8 @@ class News{
      this.summary,
      this.url,
     this.isLiked = false,
+    this.bookmark = false,
+    this.likes = 0,
 });
    News.fromJson(Map<String, dynamic> json){
     category= json['category'];
@@ -40,6 +44,8 @@ class News{
     summary= json['summary']?.toString() ?? "No Summary";
     url= json['url']?.toString() ?? "No URL";
     isLiked = false;
+    bookmark = false;
+    likes = 0;
   }
 }
 

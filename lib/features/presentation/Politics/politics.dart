@@ -11,39 +11,31 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
-  int thumn_counter = 0;
-  bool is_liked = false;
+
   final clickKey= GlobalKey();
   List<IconData> like = [];
   final IconData Unselected_like = Icons.thumb_up_alt_outlined;
   final IconData active_like = Icons.thumb_up;
+  final IconData Unselected_bookmark = Icons.bookmark_outline_outlined;
+  final IconData active_bookmark = Icons.bookmark;
 
-  //  IconData toggleLike(IconData button){
-  //   if(is_liked == false){
-  //     button = Unselected_like;
-  //   }else if(is_liked == true){
-  //     button = active_like;
-  //   }
-  //   return button;
+  // Widget BaseLine_Icon() {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(left: 15.0, top: 9),
+  //     child: Row(
+  //       crossAxisAlignment: CrossAxisAlignment.baseline,
+  //       textBaseline: TextBaseline.alphabetic,
+  //       children: [
+  //         IconButton(
+  //           onPressed: () {},
+  //           icon: Icon(Unselected_like),
+  //           selectedIcon: Icon(active_like),
+  //         ),
+  //         IconButton(onPressed: (){}, icon: const Icon(Icons.messenger)),
+  //       ],
+  //     ),
+  //   );
   // }
-
-  Widget BaseLine_Icon() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0, top: 9),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.baseline,
-        textBaseline: TextBaseline.alphabetic,
-        children: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Unselected_like),
-            selectedIcon: Icon(active_like),
-          ),
-          IconButton(onPressed: (){}, icon: const Icon(Icons.messenger)),
-        ],
-      ),
-    );
-  }
 
   List<News> news = [];
   bool isLoading = true;
@@ -116,9 +108,23 @@ class _NewsPageState extends State<NewsPage> {
                       height: 160,
                       child: Column(
                         children: [
+                          SizedBox(
+                            height: 25,
+                            child: Container(
+                                alignment: Alignment.topLeft,
+                                padding: EdgeInsets.only(left: 15),
+                                child: Row(
+                              children: [
+                                Icon(Icons.person),
+                                SizedBox(width: 5,),
+                                Text(newsitem.category.toString()),
+                              ],
+                            )),
+                          ),
                           Expanded(
                             child: ListTile(
-                              leading: Text(newsitem.category.toString()),
+                              contentPadding: EdgeInsets.only(left: 15, top: 5),
+                              // leading: Text(newsitem.category.toString()),
                               title: Text(newsitem.headline.toString()),
                               subtitle: Text(
                                 DateFormat(
@@ -126,26 +132,54 @@ class _NewsPageState extends State<NewsPage> {
                                 ).format(newsitem.datetime!),
                               ),
                               trailing: newsitem.image != null
-                                  ? Image.network(
-                                      newsitem.image!,
-                                      width: 79,
-                                      fit: BoxFit.cover,
-                                )
+                                  ? Container(
+                                margin: EdgeInsets.only(right: 5),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                      ),
+                                    height: 115,
+                                    // color: Colors.red,
+                                    child: Image.network(
+                                        newsitem.image!,
+                                        width: 115,
+                                        fit: BoxFit.fill,
+                                                                    ),
+                                  )
                                   : null,
                               dense: true,
-                              contentPadding: EdgeInsets.zero,
                               minLeadingWidth: 2,
                               minVerticalPadding: 0,
                             ),
                           ),
-                          IconButton(onPressed: (){
-                            setState(() {
-                              newsitem.isLiked = !newsitem.isLiked;
-                            });
-                          },
-                              icon: Icon(newsitem.isLiked == false ? Unselected_like : active_like),
-                            color: newsitem.isLiked == false ? Colors.black45 :Colors.red,
-                                  )
+                          Row(
+                            children: [
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Text(newsitem.likes.toString()),
+                              IconButton(onPressed: (){
+                                setState(() {
+                                  newsitem.isLiked = !newsitem.isLiked;
+                                  if(newsitem.isLiked == true){
+                                    newsitem.likes++;
+                                  }else if(newsitem.isLiked == false){
+                                    newsitem.likes--;
+                                  }
+                                });
+                              },
+                                  icon: Icon(newsitem.isLiked == false ? Unselected_like : active_like),
+                                color: newsitem.isLiked == false ? Colors.black45 :Colors.red,
+                                      ),
+                              IconButton(onPressed: (){
+                                setState(() {
+                                  newsitem.bookmark = !newsitem.bookmark;
+                                });
+                              },
+                                icon: Icon(newsitem.bookmark == false ? Unselected_bookmark : active_bookmark),
+                                color: newsitem.bookmark == false ? Colors.black45 :Colors.black45,
+                              ),
+                            ],
+                          )
                           // InkWell(
                           //   key: clickKey,
                           //   onTap: () {
