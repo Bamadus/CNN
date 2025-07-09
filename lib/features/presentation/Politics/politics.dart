@@ -152,11 +152,13 @@ class _NewsPageState extends State<NewsPage> {
                             ),
                           ),
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SizedBox(
                                 height: 2,
                               ),
-                              Text(newsitem.likes.toString()),
+                              Container(margin: EdgeInsets.only(left: 15, top: 15),child: Text(newsitem.likes.toString())),
                               IconButton(onPressed: (){
                                 setState(() {
                                   newsitem.isLiked = !newsitem.isLiked;
@@ -178,19 +180,17 @@ class _NewsPageState extends State<NewsPage> {
                                 icon: Icon(newsitem.bookmark == false ? Unselected_bookmark : active_bookmark),
                                 color: newsitem.bookmark == false ? Colors.black45 :Colors.black45,
                               ),
+                              Container(margin: EdgeInsets.only(left: 225),
+                                  child: PopupMenuButton<String>(
+                                    onSelected: (value){
+                                      // Loading...
+                                    },
+                                      itemBuilder: (BuildContext context)=>[
+                                        PopupMenuItem(value: 'edit',child: Text('Delete'))
+                                      ]
+                                  ))
                             ],
                           )
-                          // InkWell(
-                          //   key: clickKey,
-                          //   onTap: () {
-                          //     setState(() {
-                          //       is_liked = !is_liked;
-                          //     });
-                          //   },
-                          //   child: is_liked
-                          //       ? Icon(Unselected_like)
-                          //       : Icon(active_like),
-                          // ),
                         ],
                       ),
                     ),
