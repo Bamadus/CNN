@@ -1,6 +1,5 @@
-part of 'bookmark_bloc.dart';
+part of 'bloc.dart';
 
-import 'package:equatable/equatable.dart';
 
 abstract class BookmarkState extends Equatable{
   const BookmarkState();

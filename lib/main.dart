@@ -1,8 +1,18 @@
+library main;
 import 'package:flutter/material.dart';
-import 'package:cnn/features/presentation/Politics/politics.dart';
+import 'package:cnn/features/presentation/Politics/news.dart';
+import 'package:equatable/equatable.dart';
+import 'package:bloc/bloc.dart';
+
+import 'features/presentation/bloc/bloc.dart';
+
 
 void main(){
-  runApp(const Politics());
+  runApp(
+      BlocProvider(
+    create: (context) => BookmarkBloc(),
+    child: const Politics(),
+  ));
 }
 
 class Politics extends StatelessWidget{
