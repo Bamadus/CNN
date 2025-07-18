@@ -3,6 +3,9 @@ import 'package:cnn/features/domain/models/news.dart';
 import 'package:cnn/features/data/services/api_services.dart';
 import 'package:intl/intl.dart';
 
+import '../bloc/bookmark_button.dart';
+import 'bookmark_page.dart';
+
 class NewsPage extends StatefulWidget {
   const NewsPage({super.key});
 
@@ -123,9 +126,11 @@ class _NewsPageState extends State<NewsPage> {
                           ),
                           Expanded(
                             child: ListTile(
-                              contentPadding: EdgeInsets.only(left: 15, top: 5),
+                              // contentPadding: EdgeInsets.only(left: 15, top: 5),
                               // leading: Text(newsitem.category.toString()),
-                              title: Text(newsitem.headline.toString()),
+                              title: InkWell(
+                                // onDoubleTap: Loading... ,
+                                  child: Text(newsitem.headline.toString())),
                               subtitle: Text(
                                 DateFormat(
                                   'EEEE,MMM d,y'
@@ -147,8 +152,6 @@ class _NewsPageState extends State<NewsPage> {
                                   )
                                   : null,
                               dense: true,
-                              minLeadingWidth: 2,
-                              minVerticalPadding: 0,
                             ),
                           ),
                           Row(
@@ -172,21 +175,26 @@ class _NewsPageState extends State<NewsPage> {
                                   icon: Icon(newsitem.isLiked == false ? Unselected_like : active_like),
                                 color: newsitem.isLiked == false ? Colors.black45 :Colors.red,
                                       ),
-                              IconButton(onPressed: (){
-                                setState(() {
-                                  newsitem.bookmark = !newsitem.bookmark;
-                                });
-                              },
-                                icon: Icon(newsitem.bookmark == false ? Unselected_bookmark : active_bookmark),
-                                color: newsitem.bookmark == false ? Colors.black45 :Colors.black45,
-                              ),
-                              Container(margin: EdgeInsets.only(left: 225),
+                              BookmarkButton(itemId: newsitem.headline.toString()),
+                              // IconButton(onPressed: (){
+                              //   setState(() {
+                              //     newsitem.bookmark = !newsitem.bookmark;
+                              //   });
+                              // },
+                              //   icon: Icon(newsitem.bookmark == false ? Unselected_bookmark : active_bookmark),
+                              //   color: newsitem.bookmark == false ? Colors.black45 :Colors.black45,
+                              // ),
+                              Container(margin: EdgeInsets.only(left: 178),
                                   child: PopupMenuButton<String>(
                                     onSelected: (value){
-                                      // Loading...
+                                      if(value == 'bookmark'){
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Bookmark_Page()));
+                                      }
                                     },
                                       itemBuilder: (BuildContext context)=>[
-                                        PopupMenuItem(value: 'edit',child: Text('Delete'))
+                                        PopupMenuItem(value: 'delete',child: Text('Delete')),
+                                        PopupMenuItem(value: 'bookmark',child: Text('Bookmarks'))
+
                                       ]
                                   ))
                             ],

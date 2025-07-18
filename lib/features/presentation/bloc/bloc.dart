@@ -23,6 +23,7 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
             _bookmarkItems.add(event.itemID);
           }
           emit(BookmarkSuccessState(List.from(_bookmarkItems)));
+          print(BookmarkSuccessState(List.from(_bookmarkItems)));
         }catch(e){
           emit(BookmarkErrorState(e.toString()));
         }
