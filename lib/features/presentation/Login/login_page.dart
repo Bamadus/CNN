@@ -1,41 +1,17 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cnn/features/presentation/News/news.dart';
 
 
-void main(){
-  runApp(const Login());
-}
-
-class Login extends StatelessWidget{
-  const Login({super.key});
+class Login_screen extends StatefulWidget{
+  const Login_screen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const Page(),
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('en', ''), // English
-      ],
-    );
-  }
+  State<Login_screen> createState() => _Login_screenState();
 }
 
-class Page extends StatefulWidget{
-  const Page({super.key});
-
-  @override
-  State<Page> createState() => _PageState();
-}
-
-class _PageState extends State<Page> {
-  GlobalKey<FormState> _loginKey = GlobalKey<FormState>();
+class _Login_screenState extends State<Login_screen> {
+  final GlobalKey<FormState> _loginKey = GlobalKey<FormState>();
 
   final _emailController = TextEditingController();
   final _passwrdController = TextEditingController();
@@ -47,10 +23,18 @@ class _PageState extends State<Page> {
   bool _numb = false;
   bool _length = false;
   bool _passVisibility = false;
+  late IconData eye = Icons.visibility_off;
+  final IconData open_eye = Icons.visibility;
+  final IconData close_eye = Icons.visibility_off;
 
   void _visibility(){
     setState(() {
       _passVisibility= !_passVisibility;
+      if(_passVisibility == true){
+        eye = open_eye;
+      }else{
+        eye = close_eye;
+      }
     });
   }
 
@@ -73,21 +57,21 @@ class _PageState extends State<Page> {
 
   void _validatepsswrd(String psswrd) {
     setState(() {
-      _passwordError_txt =_passwrdController.text.isEmpty ? "Enter your Password" : null;
+      // _passwordError_txt =_passwrdController.text.isEmpty ? "Enter your Password" : null;
       _uppercase = psswrd.contains(RegExp(r'[A-Z]'));
       _lowercase = psswrd.contains(RegExp(r'[a-z]'));
       _spcharacter = psswrd.contains(RegExp(r'[~!@#$%^&*(),.?":{}|<>]'));
       _numb = psswrd.contains(RegExp(r'[1234567890]'));
       _length = psswrd.length >= 8;
     });
-    if (_passwrdController.text == null || _passwrdController.text.isEmpty) {
+    if (_passwrdController.text.isEmpty){
       _passwordError_txt;
     }
   }
 
   void validateEmail() {
     String email = _emailController.text.trim();
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    final emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (email.isEmpty) {
       _mailError_txt;
     } else if (!emailRegex.hasMatch(email)) {
@@ -110,7 +94,6 @@ class _PageState extends State<Page> {
       ],
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -136,121 +119,140 @@ class _PageState extends State<Page> {
                   showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
-                      backgroundColor: Color(0xffedf2fb),
+                      backgroundColor: Color(0xffedf2fb).withOpacity(0.89),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.vertical(top: Radius.circular(25))
                       ),
-                      builder: (context)=>Padding(
-                          padding: MediaQuery.of(context).viewInsets,
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            height: MediaQuery.of(context).size.height * 0.6,
-                            child: Form(
-                              key: _loginKey,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              child: Stack(
-                                children: [Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(height: 15,),
-                                    // Text("Login", style: TextStyle(fontSize: 24)),
-                                    TextFormField(
-                                      controller: _emailController,
-                                      maxLines: 1,
-                                      keyboardType: TextInputType.emailAddress,
-                                        decoration: InputDecoration(
-                                          errorText: _mailError_txt,
-                                            labelText: "Email:",
-                                          labelStyle: TextStyle(
-                                            fontSize: 20,
-                                            fontFamily: 'SourceSansPro',
-                                            color:Color(0xff33415c),
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        validator:(v){
-                                          if(v!.isEmpty){
-                                            return "This field is Required";
-                                          }else{
-                                            return null;
-                                          }
-                                        }
-                                    ),
-                                    TextFormField(
-                                        controller: _passwrdController,
-                                        // keyboardType: TextInputType.visiblePassword,
-                                        maxLines: 1,
-                                        obscureText: _passVisibility,
-                                        decoration: InputDecoration(
-                                          errorText: _passwordError_txt,
-                                            suffixIcon:IconButton(onPressed: (){
-                                              setState(() {
-                                                _passVisibility= !_passVisibility;
-                                              });
-                                            },
-                                              icon: Icon(_passVisibility ? Icons.visibility_off : Icons.visibility),
+                      builder: (context)=>AnimatedContainer(
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                        padding: EdgeInsets.all(15),
+                        child: Padding(
+                            padding: MediaQuery.of(context).viewInsets,
+                            child: Container(
+                              padding: EdgeInsets.all(15),
+                              height: MediaQuery.of(context).size.height * 0.5,
+                              child: Form(
+                                key: _loginKey,
+                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                child: Stack(
+                                    children: [Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        SizedBox(height: 15,),
+                                        // Text("Login", style: TextStyle(fontSize: 24)),
+                                        TextFormField(
+                                            controller: _emailController,
+                                            maxLines: 1,
+                                            keyboardType: TextInputType.emailAddress,
+                                            decoration: InputDecoration(
+                                              errorText: _mailError_txt,
+                                              labelText: "Email:",
+                                              labelStyle: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: 'SourceSansPro',
+                                                color:Color(0xff33415c),
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                            labelText: "Password:",
-                                          labelStyle: TextStyle(
-                                            fontSize: 20,
-                                            fontFamily: 'SourceSansPro',
-                                            color: Color(0xff33415c),
-                                            fontWeight: FontWeight.bold,
+                                            validator:(v){
+                                              if(v!.isEmpty){
+                                                return "This field is Required";
+                                              }else{
+                                                return null;
+                                              }
+                                            }
+                                        ),
+                                        TextFormField(
+                                            controller: _passwrdController,
+                                            // keyboardType: TextInputType.visiblePassword,
+                                            maxLines: 1,
+                                            // obscureText: _passVisibility,
+                                            decoration: InputDecoration(
+                                              errorText: _passwordError_txt,
+                                              // suffixIcon:IconButton(onPressed: (){_visibility();},
+                                              //   icon: Icon(eye),
+                                              // ),
+                                              labelText: "Password:",
+                                              labelStyle: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: 'SourceSansPro',
+                                                color: Color(0xff33415c),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            onChanged: (v){
+                                              _validatepsswrd(v);
+                                            },
+                                            validator: (v){
+                                              if(v!.isEmpty){
+                                                return "This field is required";
+                                              }else{
+                                                return null;
+                                              }
+                                            }
+                                        ),
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: TextButton(onPressed: (){}, child: Text('Forgot Password?',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Color(0xff33415c),
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.italic,
+                                              fontFamily: 'SourceSansPro',
+                                            ),
+                                          )),
+                                        ),
+                                        SizedBox(height: 45),
+                                        Container(
+                                          height: 115,
+                                          width: 235,
+                                          padding: EdgeInsets.only(bottom: 21,top: 15,left: 15, right: 15),
+                                          child: ElevatedButton(
+                                            onPressed: (){
+                                              if (_loginKey.currentState!.validate()){
+                                                _validateInput();
+                                                validateEmail();
+                                                _validatepsswrd(_passwrdController.text);
+                                                if(_mailError_txt == null && _passwordError_txt == null){
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> NewsPage()));
+                                                }
+                                                // Navigator.pushNamed(context, '/news');
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              foregroundColor: Colors.white,
+                                              shadowColor:Color(0xffb6ccfe),
+                                              textStyle: TextStyle(
+                                                fontSize: 45,
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic,
+                                                fontFamily: 'SourceSansPro',
+                                              ),
+                                              backgroundColor: Color(0xff33415c),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(8),
+                                              ),
+                                            ),
+                                            child: Text("Login"),
                                           ),
                                         ),
-                                      onChanged: _validatepsswrd,
-                                        validator: (v){
-                                          if(v!.isEmpty){
-                                            return "This field is required";
-                                          }else{
-                                            return null;
-                                          }
-                                        }
-                                    ),
-                                    const SizedBox(height: 5,),
-                                    _psswrdRequirement(_length, "Password must be at least 8 characters"),
-                                    _psswrdRequirement(_uppercase, "At least 1Uppercase"),
-                                    _psswrdRequirement(_lowercase, "At least 1 lowercase"),
-                                    _psswrdRequirement(_spcharacter, "Add some special characters"),
-                                    _psswrdRequirement(_numb, "At least one Number"),
-                                    SizedBox(height: 50),
-                                    Container(
-                                      height: 115,
-                                      width: 235,
-                                      padding: EdgeInsets.only(bottom: 21,top: 15,left: 15, right: 15),
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          if (_loginKey.currentState!.validate()) {
-                                            _loginKey.currentState!.save();
-                                            _validateInput();
-                                            validateEmail();
-                                            // Navigator.pushNamed(context, '/news');
-                                          }
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          foregroundColor: Colors.white,
-                                          shadowColor:Color(0xffb6ccfe),
-                                          textStyle: TextStyle(
-                                            fontSize: 45,
-                                            fontWeight: FontWeight.bold,
-                                            fontStyle: FontStyle.italic,
-                                            fontFamily: 'SourceSansPro',
-                                          ),
-                                          backgroundColor: Color(0xff33415c),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(8),
-                                          ),
-                                        ),
-                                        child: Text("Login"),
-                                      ),
-                                    ),
-                                  ],
-                                ),]
+                                      ],
+                                    ),]
+                                ),
                               ),
-                            ),
-                          ))
-                  );
+                            )),
+                      )
+                  ).whenComplete((){
+                    _emailController.clear();
+                    _passwrdController.clear();
+                    setState(() {
+                      _mailError_txt;
+                      _passwordError_txt;
+                    });
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Color(0xff002855),

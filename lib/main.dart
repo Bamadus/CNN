@@ -1,10 +1,12 @@
 library main;
 import 'package:flutter/material.dart';
-import 'package:cnn/features/presentation/News/news.dart';
 import 'package:equatable/equatable.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/presentation/bloc/bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cnn/features/presentation/Login/login_page.dart';
+
 
 
 void main(){
@@ -21,7 +23,16 @@ class Politics extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: NewsPage(),
+      home: const Login_screen(),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''), // English
+      ],
+      debugShowCheckedModeBanner: false,
     );
   }
 }

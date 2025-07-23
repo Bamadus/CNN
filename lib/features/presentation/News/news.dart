@@ -188,7 +188,10 @@ class _NewsPageState extends State<NewsPage> {
                                   child: PopupMenuButton<String>(
                                     onSelected: (value){
                                       if(value == 'bookmark'){
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> Bookmark_Page()));
+                                        Future.delayed(Duration.zero,(){
+                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> Bookmark_Page()));
+
+                                        });
                                       }
                                     },
                                       itemBuilder: (BuildContext context)=>[
