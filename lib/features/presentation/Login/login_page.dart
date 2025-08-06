@@ -1,7 +1,8 @@
+import 'package:cnn/features/presentation/Login/signUp.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cnn/features/presentation/News/news.dart';
-
+import 'package:cnn/features/domain/login/abstract.dart';
 
 class Login_screen extends StatefulWidget{
   const Login_screen({super.key});
@@ -15,7 +16,7 @@ class _Login_screenState extends State<Login_screen> {
 
   final _emailController = TextEditingController();
   final _passwrdController = TextEditingController();
-  String? _mailError_txt;
+  String? _mailError_txt = "This field is required.";
   String? _passwordError_txt;
   bool _uppercase = false;
   bool _lowercase = false;
@@ -96,6 +97,26 @@ class _Login_screenState extends State<Login_screen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.all(10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 4,
+          // backgroundColor: Colors.white.withOpacity(.7),
+          content: Text('Welcome!!!, to CNN'),
+          duration: Duration(seconds: 8),
+        ),
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff34a0a4),
@@ -142,56 +163,37 @@ class _Login_screenState extends State<Login_screen> {
                                       children: [
                                         SizedBox(height: 15,),
                                         // Text("Login", style: TextStyle(fontSize: 24)),
-                                        TextFormField(
-                                            controller: _emailController,
-                                            maxLines: 1,
-                                            keyboardType: TextInputType.emailAddress,
-                                            decoration: InputDecoration(
-                                              errorText: _mailError_txt,
-                                              labelText: "Email:",
-                                              labelStyle: TextStyle(
-                                                fontSize: 20,
-                                                fontFamily: 'SourceSansPro',
-                                                color:Color(0xff33415c),
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            validator:(v){
-                                              if(v!.isEmpty){
-                                                return "This field is Required";
-                                              }else{
-                                                return null;
-                                              }
+                                        user_Gate.userTextFormField(
+                                          controller: _emailController,
+                                          hintText: 'news@gmail.com',
+                                          errorText: _mailError_txt,
+                                          labelText: "Email:",
+                                          validator: (v){
+                                            if(v!.isEmpty){
+                                              return "This field is Required";
+                                            }else{
+                                              return null;
                                             }
+                                          },
+                                          enable: true,
+                                          maxLines: 1,
+                                          maxLength: 59,
+                                          textInputType: TextInputType.emailAddress,
+                                          keyboardType: TextInputType.emailAddress,
                                         ),
-                                        TextFormField(
-                                            controller: _passwrdController,
-                                            // keyboardType: TextInputType.visiblePassword,
-                                            maxLines: 1,
-                                            // obscureText: _passVisibility,
-                                            decoration: InputDecoration(
-                                              errorText: _passwordError_txt,
-                                              // suffixIcon:IconButton(onPressed: (){_visibility();},
-                                              //   icon: Icon(eye),
-                                              // ),
-                                              labelText: "Password:",
-                                              labelStyle: TextStyle(
-                                                fontSize: 20,
-                                                fontFamily: 'SourceSansPro',
-                                                color: Color(0xff33415c),
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            onChanged: (v){
-                                              _validatepsswrd(v);
-                                            },
-                                            validator: (v){
-                                              if(v!.isEmpty){
-                                                return "This field is required";
-                                              }else{
-                                                return null;
-                                              }
+                                        user_Gate.userTextFormField(
+                                          controller: _passwrdController,
+                                          hintText: 'password',
+                                          errorText: _passwordError_txt,
+                                          labelText: "Password:",
+                                          validator: (v){
+                                            if(v!.isEmpty){
+                                              return "This field is required";
+                                            }else{
+                                              return null;
                                             }
+                                          },
+                                          keyboardType: TextInputType.visiblePassword,
                                         ),
                                         Container(
                                           alignment: Alignment.centerLeft,
@@ -288,7 +290,10 @@ class _Login_screenState extends State<Login_screen> {
                         TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = (){
-                              //Loading...
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context)=> const SignUp())
+                            );
                             },
                           text: 'Sign Up...',
                           style: TextStyle(

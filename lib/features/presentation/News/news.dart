@@ -56,6 +56,10 @@ class _NewsPageState extends State<NewsPage> {
     });
   }
 
+  void push(){
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>Bookmark_Page()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -186,13 +190,13 @@ class _NewsPageState extends State<NewsPage> {
                               // ),
                               Container(margin: EdgeInsets.only(left: 178),
                                   child: PopupMenuButton<String>(
-                                    onSelected: (value){
-                                      if(value == 'bookmark'){
-                                        Future.delayed(Duration.zero,(){
-                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> Bookmark_Page()));
+                                    onSelected: (value) async{
+                                       if(value == 'bookmark'){
+                                         await Future.delayed(Duration(seconds: 1),()=> push());
 
-                                        });
-                                      }
+                                       }else if(value == 'delete'){
+                                         print('delete');
+                                       }
                                     },
                                       itemBuilder: (BuildContext context)=>[
                                         PopupMenuItem(value: 'delete',child: Text('Delete')),
