@@ -1,8 +1,8 @@
-import 'package:cnn/features/presentation/Login/signUp.dart';
+import 'package:cnn/features/presentation/routes/signUp.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cnn/features/presentation/News/news.dart';
-import 'package:cnn/features/domain/login/abstract.dart';
+import 'package:cnn/features/presentation/widget/login_abst/abstract.dart';
 
 class Login_screen extends StatefulWidget{
   const Login_screen({super.key});

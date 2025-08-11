@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/login/abstract.dart';
+import 'package:cnn/features/presentation/widget/login_abst/abstract.dart';
 import 'login_page.dart';
 
 class SignUp extends StatefulWidget{

@@ -83,6 +83,7 @@ flutter:
      - assets/Images/login 5.png
      - assets/Images/login 6.png
      - assets/Images/paseye1.png
+     - assets/Images/login1.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
