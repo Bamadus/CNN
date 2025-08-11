@@ -18,26 +18,7 @@ class _Login_screenState extends State<Login_screen> {
   final _passwrdController = TextEditingController();
   String? _mailError_txt = "This field is required.";
   String? _passwordError_txt;
-  bool _uppercase = false;
-  bool _lowercase = false;
-  bool _spcharacter = false;
-  bool _numb = false;
-  bool _length = false;
-  bool _passVisibility = false;
-  late IconData eye = Icons.visibility_off;
-  final IconData open_eye = Icons.visibility;
-  final IconData close_eye = Icons.visibility_off;
 
-  void _visibility(){
-    setState(() {
-      _passVisibility= !_passVisibility;
-      if(_passVisibility == true){
-        eye = open_eye;
-      }else{
-        eye = close_eye;
-      }
-    });
-  }
 
   void _validateInput() {
     setState((){
@@ -56,20 +37,6 @@ class _Login_screenState extends State<Login_screen> {
     });
   }
 
-  void _validatepsswrd(String psswrd) {
-    setState(() {
-      // _passwordError_txt =_passwrdController.text.isEmpty ? "Enter your Password" : null;
-      _uppercase = psswrd.contains(RegExp(r'[A-Z]'));
-      _lowercase = psswrd.contains(RegExp(r'[a-z]'));
-      _spcharacter = psswrd.contains(RegExp(r'[~!@#$%^&*(),.?":{}|<>]'));
-      _numb = psswrd.contains(RegExp(r'[1234567890]'));
-      _length = psswrd.length >= 8;
-    });
-    if (_passwrdController.text.isEmpty){
-      _passwordError_txt;
-    }
-  }
-
   void validateEmail() {
     String email = _emailController.text.trim();
     final emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
@@ -82,30 +49,19 @@ class _Login_screenState extends State<Login_screen> {
     }
   }
 
-  Widget _psswrdRequirement(bool psswrd, String text) {
-    return Row(
-      children: [
-        Icon(
-          psswrd ? Icons.check_circle : Icons.cancel,
-          color: psswrd ? Color(0xff33415c) : Colors.deepOrangeAccent,
-          size: 20,
-        ),
-        const SizedBox(width: 10),
-        Text(text),
-      ],
-    );
-  }
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          padding: EdgeInsets.all(10),
-          margin: EdgeInsets.all(10),
+          margin: EdgeInsets.only(bottom: 66),
+          backgroundColor: Colors.white60.withOpacity(.6),
+          hitTestBehavior: HitTestBehavior.translucent,
+          dismissDirection: DismissDirection.horizontal,
+          padding: EdgeInsets.all(19),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
           ),
           elevation: 4,
           // backgroundColor: Colors.white.withOpacity(.7),
@@ -217,7 +173,6 @@ class _Login_screenState extends State<Login_screen> {
                                               if (_loginKey.currentState!.validate()){
                                                 _validateInput();
                                                 validateEmail();
-                                                _validatepsswrd(_passwrdController.text);
                                                 if(_mailError_txt == null && _passwordError_txt == null){
                                                   Navigator.push(context, MaterialPageRoute(builder: (context)=> NewsPage()));
                                                 }
