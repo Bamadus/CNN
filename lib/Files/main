@@ -1,27 +1,61 @@
-import 'package:flutter/material.dart';
-import 'Home.dart';
+user_Gate.userTextField(
+                  controller: _usernameController,
+                  labelText: 'Username:',
+                  validator: (v){
+                    if(v!.isEmpty){
+                      return "This field is Required";
+                    }else{
+                      return null;
+                    }
+                  },
+                  enable: true,
+                  maxLines: 1,
+                  maxLength: 15,
+                  keyboardType: TextInputType.name,
+                ),
+                SizedBox(height: 5,),
+                user_Gate.userTextField(
+                  controller:_mailController,
+                  labelText: 'Mail:',
+                  validator: (v){
+                    if(v!.isEmpty){
+                      return "This field is Required";
+                    }else{
+                      return null;
+                    }
+                  },
+                  enable: true,
+                  maxLines: 1,
+                  maxLength: 49,
+                  keyboardType: TextInputType.name,
+                ),
+                SizedBox(height: 5,),
+                user_Gate.passwordTextField(
+                    controller: _passwordController,
+                    keyboardType: TextInputType.text,
+                    obscureText: _passVisibility,
+                    hintText: '*******',
+                    labelText: 'Password:',
+                    validator: (v){
+                      if(v!.isEmpty){
+                        return "This field is Required";
+                      }else{
+                        _validatepsswrd(v);
+                      }
+                    },
+                    enable: true,
+                    maxLines: 1,
+                    maxLength: 15,
+                  suffixIcon: InkWell(onTap: ()=>_visibility(_eye)),
+                ),
+                // const SizedBox(height: 5,),
+                // _psswrdRequirement(_length, "Password must be at least 8 characters"),
+                // _psswrdRequirement(_uppercase, "At least 1Uppercase"),
+                // _psswrdRequirement(_lowercase, "At least 1 lowercase"),
+                // _psswrdRequirement(_spcharacter, "Add some special characters"),
+                // _psswrdRequirement(_numb, "At least one Number"),
+                // SizedBox(height: 25,),
 
-void main() {
-  runApp(const Home_page());
-}
-
-class Home_page extends StatefulWidget{
-  const Home_page({super.key});
-
-  @override
-  State<Home_page> createState() => _Home_pageState();
-}
-
-class _Home_pageState extends State<Home_page> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        theme: ThemeData(
-          brightness: Brightness.light,
-    ),
-    home:const Home(),
-    );
-  }
-}
 
 
+ 

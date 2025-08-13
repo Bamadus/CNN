@@ -23,6 +23,12 @@ class user_Gate{
       },
       keyboardType: textInputType,
       maxLength: maxLength,
+      buildCounter: (
+          BuildContext context, {
+            required int currentLength,
+            required bool isFocused,
+            required int? maxLength,
+          }) => null,
       enabled: enable,
       decoration: InputDecoration(
         isDense: true,
@@ -55,6 +61,12 @@ class user_Gate{
      },
      keyboardType: textInputType,
      maxLength: maxLength,
+     buildCounter: (
+         BuildContext context, {
+           required int currentLength,
+           required bool isFocused,
+           required int? maxLength,
+         }) => null,
      enabled: enable,
      decoration: InputDecoration(
        errorText: errorText,
@@ -94,6 +106,12 @@ class user_Gate{
       },
       keyboardType: textInputType,
       maxLength: maxLength,
+        buildCounter: (
+            BuildContext context, {
+              required int currentLength,
+              required bool isFocused,
+              required int? maxLength,
+            }) => null,
       enabled: enable,
       decoration: InputDecoration(
         errorText: errorText,
@@ -150,12 +168,18 @@ class user_Gate{
   }){
     return TextField(
         controller: controller,
-        onChanged: (v){
-          controller!.text = v.replaceAll(',', '');
-          controller.selection = TextSelection.collapsed(offset: v.length);
-        },
+        // onChanged: (v){
+        //   controller!.text = v.replaceAll(',', '');
+        //   controller.selection = TextSelection.collapsed(offset: v.length);
+        // },
         keyboardType: textInputType,
         maxLength: maxLength,
+        buildCounter: (
+            BuildContext context, {
+              required int currentLength,
+              required bool isFocused,
+              required int? maxLength,
+            }) => null,
         enabled: enable,
         obscureText: obscureText,
         obscuringCharacter: "*",

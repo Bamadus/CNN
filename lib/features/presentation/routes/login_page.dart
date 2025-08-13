@@ -50,29 +50,6 @@ class _Login_screenState extends State<Login_screen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          margin: EdgeInsets.only(bottom: 66),
-          backgroundColor: Colors.white60.withOpacity(.6),
-          hitTestBehavior: HitTestBehavior.translucent,
-          dismissDirection: DismissDirection.horizontal,
-          padding: EdgeInsets.all(19),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          elevation: 4,
-          // backgroundColor: Colors.white.withOpacity(.7),
-          content: Text('Welcome!!!, to CNN'),
-          duration: Duration(seconds: 8),
-        ),
-      );
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff34a0a4),

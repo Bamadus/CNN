@@ -5,12 +5,11 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/presentation/bloc/bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:cnn/features/presentation/Login/login_page.dart';
+import 'package:cnn/features/presentation/routes/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'features/presentation/widget/login_abst/intro_page.dart';
 import 'firebase_options.dart';
-
-
 
 void main()async{
   // WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +28,7 @@ class Politics extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const Login_screen(),
+      home: const Splash(),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
