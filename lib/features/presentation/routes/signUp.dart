@@ -106,7 +106,7 @@ class _SignUpState extends State<SignUp> {
                         onPressed: (){
                           if (_signUpKey.currentState!.validate()){
                             _validateInput;
-                            validateEmail;
+                            // validateEmail;
                             if(_mailError_txt == null && _passwordError_txt == null && _nameError_txt == null){
                               Navigator.push(context, MaterialPageRoute(builder: (context)=> Login_screen()));
                             }

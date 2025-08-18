@@ -91,7 +91,7 @@ class _mailfieldState extends State<mailfield> {
         contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 15),
       ),
       validator: widget.validator,
-      onChanged: _validateEmail,
+      // onChanged: _validateEmail,
     );
   }
 }
