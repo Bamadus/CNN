@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:cnn/features/presentation/widget/login_abst/abstract.dart';
+import 'package:cnn/features/presentation/widget/login_abst/namefield.dart';
+import '../widget/login_abst/mailfield.dart';
 import '../widget/sign_up/pwordfield.dart';
 import 'login_page.dart';
 
@@ -20,58 +21,13 @@ class _SignUpState extends State<SignUp> {
   String? _mailError_txt;
   String? _passwordError_txt;
   String? _nameError_txt;
-  // bool _uppercase = false;
-  // bool _lowercase = false;
-  // bool _spcharacter = false;
-  // bool _numb = false;
-  // bool _length = false;
-  bool _passVisibility = false;
-  late final IconData _eye = close_eye;
-  final IconData open_eye = Icons.visibility;
-  final IconData close_eye = Icons.visibility_off;
-
-  Widget _visibility(IconData onShow){
-    setState(() {
-      _passVisibility= !_passVisibility;
-      if(_passVisibility == true){
-        onShow = open_eye;
-      }else{
-        onShow = close_eye;
-      }
-    });
-    return Icon(onShow);
-  }
 
   void _validateInput() {
-    setState((){
-      _mailError_txt= _mailController.text.isEmpty?"This field is required":null;
-      _passwordError_txt= _passwordController.text.isEmpty ? "This field is required." : null;
-      _nameError_txt= _usernameController.text.isEmpty ? "This field is required." : null;
-      if (_mailController.text.isEmpty || _passwordController.text.isEmpty || _usernameController.text.isEmpty) {
-        _mailError_txt;
-        _passwordError_txt;
-        _nameError_txt;
-
-      }else if (_mailController.text.length < 2) {
-        _mailError_txt = 'Must be at least 3 characters';
-
-      }else {
-        _mailError_txt = null; // No error
-      }
-    });
-  }
-
-  void validateEmail(){
-    String email = _mailController.text.trim();
-    final emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (email.isEmpty) {
-      _mailError_txt;
-    } else if (!emailRegex.hasMatch(email)) {
-      _mailError_txt;
-    } else {
-      null;
+    if (_mailController.text.length < 2) {
+      _mailError_txt = 'Must be at least 3 characters';
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +58,9 @@ class _SignUpState extends State<SignUp> {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child:Column(
                   children: [
-                    user_Gate.userTextField(
+                    Namefield(
                       controller: _usernameController,
                       labelText: 'Username:',
-                      errorText: _nameError_txt,
                       validator: (v){
                         if(v!.isEmpty){
                           return "This field is Required";
@@ -113,16 +68,13 @@ class _SignUpState extends State<SignUp> {
                           return null;
                         }
                       },
-                      enable: true,
-                      maxLines: 1,
                       maxLength: 15,
                       keyboardType: TextInputType.name,
                     ),
                     SizedBox(height: 15,),
-                    user_Gate.userTextField(
+                    mailfield(
                       controller:_mailController,
                       labelText: 'Mail:',
-                      errorText: _mailError_txt,
                       validator: (v){
                         if(v!.isEmpty){
                           return "This field is Required";
@@ -130,9 +82,6 @@ class _SignUpState extends State<SignUp> {
                           return null;
                         }
                       },
-                      enable: true,
-                      maxLines: 1,
-                      maxLength: 49,
                       keyboardType: TextInputType.name,
                     ),
                     SizedBox(height: 15,),
@@ -156,12 +105,11 @@ class _SignUpState extends State<SignUp> {
                       child: ElevatedButton(
                         onPressed: (){
                           if (_signUpKey.currentState!.validate()){
-                            _validateInput();
-                            validateEmail();
+                            _validateInput;
+                            validateEmail;
                             if(_mailError_txt == null && _passwordError_txt == null && _nameError_txt == null){
                               Navigator.push(context, MaterialPageRoute(builder: (context)=> Login_screen()));
                             }
-                            // Navigator.pushNamed(context, '/news');
                           }
                         },
                         style: ElevatedButton.styleFrom(

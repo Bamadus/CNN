@@ -2,7 +2,7 @@ import 'package:cnn/features/presentation/routes/signUp.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cnn/features/presentation/News/news.dart';
-import 'package:cnn/features/presentation/widget/login_abst/abstract.dart';
+import 'package:cnn/features/presentation/widget/login_abst/namefield.dart';
 
 class Login_screen extends StatefulWidget{
   const Login_screen({super.key});
@@ -96,7 +96,7 @@ class _Login_screenState extends State<Login_screen> {
                                       children: [
                                         SizedBox(height: 15,),
                                         // Text("Login", style: TextStyle(fontSize: 24)),
-                                        user_Gate.userTextFormField(
+                                        Namefield.userTextFormField(
                                           controller: _emailController,
                                           hintText: 'news@gmail.com',
                                           errorText: _mailError_txt,
@@ -114,7 +114,7 @@ class _Login_screenState extends State<Login_screen> {
                                           textInputType: TextInputType.emailAddress,
                                           keyboardType: TextInputType.emailAddress,
                                         ),
-                                        user_Gate.userTextFormField(
+                                        Namefield.userTextFormField(
                                           controller: _passwrdController,
                                           hintText: 'password',
                                           errorText: _passwordError_txt,

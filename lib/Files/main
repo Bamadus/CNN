@@ -1,61 +1,222 @@
-user_Gate.userTextField(
-                  controller: _usernameController,
-                  labelText: 'Username:',
-                  validator: (v){
-                    if(v!.isEmpty){
-                      return "This field is Required";
-                    }else{
-                      return null;
-                    }
-                  },
-                  enable: true,
-                  maxLines: 1,
-                  maxLength: 15,
-                  keyboardType: TextInputType.name,
-                ),
-                SizedBox(height: 5,),
-                user_Gate.userTextField(
-                  controller:_mailController,
-                  labelText: 'Mail:',
-                  validator: (v){
-                    if(v!.isEmpty){
-                      return "This field is Required";
-                    }else{
-                      return null;
-                    }
-                  },
-                  enable: true,
-                  maxLines: 1,
-                  maxLength: 49,
-                  keyboardType: TextInputType.name,
-                ),
-                SizedBox(height: 5,),
-                user_Gate.passwordTextField(
-                    controller: _passwordController,
-                    keyboardType: TextInputType.text,
-                    obscureText: _passVisibility,
-                    hintText: '*******',
-                    labelText: 'Password:',
-                    validator: (v){
-                      if(v!.isEmpty){
-                        return "This field is Required";
-                      }else{
-                        _validatepsswrd(v);
-                      }
-                    },
-                    enable: true,
-                    maxLines: 1,
-                    maxLength: 15,
-                  suffixIcon: InkWell(onTap: ()=>_visibility(_eye)),
-                ),
-                // const SizedBox(height: 5,),
-                // _psswrdRequirement(_length, "Password must be at least 8 characters"),
-                // _psswrdRequirement(_uppercase, "At least 1Uppercase"),
-                // _psswrdRequirement(_lowercase, "At least 1 lowercase"),
-                // _psswrdRequirement(_spcharacter, "Add some special characters"),
-                // _psswrdRequirement(_numb, "At least one Number"),
-                // SizedBox(height: 25,),
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+class user_Gate{
 
+  static Widget plainTextFormField({
+    TextEditingController? controller,
+    String? hintText,
+    String? type,
+    TextInputType textInputType = TextInputType.text,
+    FormFieldValidator<String>? validator,
+    int maxLines=1,
+    int? maxLength,
+    bool enable=true,
+    Function? onTap,
+}){
+    return TextFormField(
+      controller: controller,
+      onChanged: (v){
+        controller!.text = v.replaceAll(',', '');
+        controller.selection = TextSelection.collapsed(offset: v.length);
+      },
+      keyboardType: textInputType,
+      maxLength: maxLength,
+      buildCounter: (
+          BuildContext context, {
+            required int currentLength,
+            required bool isFocused,
+            required int? maxLength,
+          }) => null,
+      enabled: enable,
+      decoration: InputDecoration(
+        isDense: true,
+        hintText: hintText,
+        counterText: "",
+        ),
+      style: TextStyle(
+          fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+      validator: validator,
+    );
+  }
 
- 
+  static Widget userTextFormField({
+    TextEditingController? controller,
+    String? hintText,
+    String? errorText,
+    String? labelText,
+    TextInputType textInputType = TextInputType.text,
+    FormFieldValidator<String>? validator,
+    int maxLines=1,
+    int? maxLength,
+    bool enable=true,
+    required TextInputType keyboardType,
+}){
+   return TextFormField(
+     controller: controller,
+     onChanged: (v){
+       controller!.text = v.replaceAll(',', '');
+       controller.selection = TextSelection.collapsed(offset: v.length);
+     },
+     keyboardType: textInputType,
+     maxLength: maxLength,
+     buildCounter: (
+         BuildContext context, {
+           required int currentLength,
+           required bool isFocused,
+           required int? maxLength,
+         }) => null,
+     enabled: enable,
+     decoration: InputDecoration(
+       errorText: errorText,
+       labelText: labelText,
+       labelStyle: TextStyle(
+         fontSize:19,
+         fontFamily: 'SourceSansPro',
+         color:Color(0xff33415c),
+         fontWeight: FontWeight.bold,
+       ),
+       isDense: true,
+       hintText: hintText,
+       counterText: "",
+     ),
+     style: TextStyle(
+         fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),
+     validator: validator,
+   );
+  }
+
+  static Widget userTextField({
+    TextEditingController? controller,
+    String? errorText,
+    String? labelText,
+    TextInputType textInputType = TextInputType.text,
+    int maxLines=1,
+    int? maxLength,
+    bool enable=true,
+    required TextInputType keyboardType,
+    required String? Function(dynamic v) validator,
+}){
+    return TextField(
+      controller: controller,
+      onChanged: (v){
+        controller!.text = v.replaceAll(',', '');
+        controller.selection = TextSelection.collapsed(offset: v.length);
+      },
+      keyboardType: textInputType,
+      maxLength: maxLength,
+        buildCounter: (
+            BuildContext context, {
+              required int currentLength,
+              required bool isFocused,
+              required int? maxLength,
+            }) => null,
+      enabled: enable,
+      decoration: InputDecoration(
+        errorText: errorText,
+        labelText: labelText,
+        labelStyle: TextStyle(
+          fontSize:19,
+          fontFamily: 'SourceSansPro',
+          color:Color(0xff33415c),
+          fontWeight: FontWeight.bold,
+        ),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: const BorderSide(
+                style: BorderStyle.solid,
+                width: 1.0,
+                color: Color(0xff33415c)
+            )),
+        errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(width: 1.0, color: Colors.red)),
+        border: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 1,
+              color: Color(0xff33415c),
+        )
+      ),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 1,
+                color: Color(0xff33415c),
+              ),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(5.0),
+      )
+    ))
+    );
+}
+
+  static Widget passwordTextField({
+    TextEditingController? controller,
+    String? hintText,
+    String? errorText,
+    String? labelText,
+    required bool obscureText,
+    TextInputType textInputType = TextInputType.text,
+    int maxLines=1,
+    int? maxLength,
+    bool enable=true,
+    bool eye = true,
+    final IconData open_eye = Icons.visibility,
+    final IconData close_eye = Icons.visibility_off,
+    required Widget suffixIcon,
+    required TextInputType keyboardType,
+    required String? Function(dynamic v) validator,
+  }){
+    return TextField(
+        controller: controller,
+        // onChanged: (v){
+        //   controller!.text = v.replaceAll(',', '');
+        //   controller.selection = TextSelection.collapsed(offset: v.length);
+        // },
+        keyboardType: textInputType,
+        maxLength: maxLength,
+        buildCounter: (
+            BuildContext context, {
+              required int currentLength,
+              required bool isFocused,
+              required int? maxLength,
+            }) => null,
+        enabled: enable,
+        obscureText: obscureText,
+        obscuringCharacter: "*",
+        decoration: InputDecoration(
+          suffixIcon: suffixIcon,
+            errorText: errorText,
+            labelText: labelText,
+            labelStyle: TextStyle(
+              fontSize:19,
+              fontFamily: 'SourceSansPro',
+              color:Color(0xff33415c),
+              fontWeight: FontWeight.bold,
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: const BorderSide(
+                    style: BorderStyle.solid,
+                    width: 1.0,
+                    color: Color(0xff33415c)
+                )),
+            errorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(width: 1.0, color: Colors.red)),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Color(0xff33415c),
+                )
+            ),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1,
+                  color: Color(0xff33415c),
+                ),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(5.0),
+                )
+            ))
+    );
+  }
+}
