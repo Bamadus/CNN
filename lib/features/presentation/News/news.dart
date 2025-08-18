@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cnn/features/domain/models/news.dart';
-import 'package:cnn/features/data/services/api_services.dart';
+import 'package:cnn/domain/models/news.dart';
+import 'package:cnn/data/services/api_services.dart';
 import 'package:intl/intl.dart';
 
 import '../bloc/bookmark_button.dart';

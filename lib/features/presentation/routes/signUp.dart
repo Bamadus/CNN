@@ -1,5 +1,6 @@
+import 'package:cnn/core/auth_service.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cnn/features/presentation/widget/login_abst/namefield.dart';
 import '../widget/login_abst/mailfield.dart';
 import '../widget/sign_up/pwordfield.dart';
@@ -15,6 +16,7 @@ class SignUp extends StatefulWidget{
 class _SignUpState extends State<SignUp> {
   GlobalKey<FormState> _signUpKey = GlobalKey<FormState>();
 
+  String errormessage= '';
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _mailController = TextEditingController();
@@ -22,11 +24,32 @@ class _SignUpState extends State<SignUp> {
   String? _passwordError_txt;
   String? _nameError_txt;
 
-  void _validateInput() {
+  _validateInput() {
     if (_mailController.text.length < 2) {
-      _mailError_txt = 'Must be at least 3 characters';
+      return _mailError_txt = 'Must be at least 3 characters';
     }
   }
+
+  void register()async{
+    try{
+      await authService.value.createAccount(
+          email: _mailController.text,
+          password: _passwordController.text
+      );
+      Navigator.pop(context);
+      } on FirebaseAuthException catch(e){
+      setState(() {
+        errormessage = e.message!;
+      });
+    }
+  }
+
+  // Future<void> createUSer()async{
+  //   final userCredentials= await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email:_mailController.text.trim(),
+  //       password:_passwordController.text.trim());
+  //   print(userCredentials);
+  // }
 
 
   @override
@@ -63,7 +86,7 @@ class _SignUpState extends State<SignUp> {
                       labelText: 'Username:',
                       validator: (v){
                         if(v!.isEmpty){
-                          return "This field is Required";
+                          return "This field is required";
                         }else{
                           return null;
                         }
@@ -75,9 +98,10 @@ class _SignUpState extends State<SignUp> {
                     mailfield(
                       controller:_mailController,
                       labelText: 'Mail:',
+                      errorText: _mailError_txt,
                       validator: (v){
                         if(v!.isEmpty){
-                          return "This field is Required";
+                          return "This field is required";
                         }else{
                           return null;
                         }
@@ -105,10 +129,14 @@ class _SignUpState extends State<SignUp> {
                       child: ElevatedButton(
                         onPressed: (){
                           if (_signUpKey.currentState!.validate()){
-                            _validateInput;
+                            register();
                             // validateEmail;
-                            if(_mailError_txt == null && _passwordError_txt == null && _nameError_txt == null){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> Login_screen()));
+                            if(_mailError_txt == null){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context)=> Login_screen())
+                              );
                             }
                           }
                         },

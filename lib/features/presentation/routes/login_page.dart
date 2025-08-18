@@ -130,7 +130,9 @@ class _Login_screenState extends State<Login_screen> {
                                         ),
                                         Container(
                                           alignment: Alignment.centerLeft,
-                                          child: TextButton(onPressed: (){}, child: Text('Forgot Password?',
+                                          child: TextButton(onPressed: (){
+                                          //   Loading...
+                                          }, child: Text('Forgot Password?',
                                             style: TextStyle(
                                               fontSize: 15,
                                               color: Color(0xff33415c),
@@ -151,6 +153,7 @@ class _Login_screenState extends State<Login_screen> {
                                                 _validateInput();
                                                 validateEmail();
                                                 if(_mailError_txt == null && _passwordError_txt == null){
+                                                  Navigator.pop(context);
                                                   Navigator.push(context, MaterialPageRoute(builder: (context)=> NewsPage()));
                                                 }
                                                 // Navigator.pushNamed(context, '/news');

@@ -6,6 +6,7 @@ class mailfield extends StatefulWidget{
   final TextEditingController? controller;
   final String? hintText;
   final String? labelText;
+  final String? errorText;
   final TextInputType textInputType = TextInputType.text;
   final FormFieldValidator<String>? validator;
   final int maxLines=1;
@@ -17,6 +18,7 @@ class mailfield extends StatefulWidget{
     required this.controller,
     required this.labelText,
     this.validator,
+    this.errorText,
     this.hintText,
     required TextInputType keyboardType,
     this.onTap,
@@ -27,15 +29,15 @@ class mailfield extends StatefulWidget{
 }
 class _mailfieldState extends State<mailfield> {
 
-  String? _mailError_txt= "Error in field";
+  String? _Error_txt;
 
-  _validateEmail(){
-    String email = widget.controller!.text.trim();
+  _validateEmail(TextEditingController mail){
+    String email = mail.text.trim();
     final emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (!emailRegex.hasMatch(email)) {
-      _mailError_txt;
-    } else {
-      null;
+      _Error_txt = "Invalid email format";
+    } else if(mail.text.length < 2){
+      return "Mail error!!?";
     }
   }
 

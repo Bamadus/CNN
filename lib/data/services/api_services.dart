@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:cnn/features/domain/models/news.dart';
+import 'package:cnn/domain/models/news.dart';
 // import 'package:cnn/features/data/services/api_token.dart';
 
 Future<List<News>> fetchNews() async {

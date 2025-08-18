@@ -12,9 +12,9 @@ import 'features/presentation/widget/login_abst/intro_page.dart';
 import 'firebase_options.dart';
 
 void main()async{
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
       BlocProvider(
     create: (context) => BookmarkBloc(),
