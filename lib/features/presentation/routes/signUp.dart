@@ -1,4 +1,4 @@
-import 'package:cnn/core/auth_service.dart';
+import 'package:cnn/data/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cnn/features/presentation/widget/login_abst/namefield.dart';
@@ -37,6 +37,27 @@ class _SignUpState extends State<SignUp> {
           password: _passwordController.text
       );
       Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Sign Up Successfully...",
+              style: TextStyle(
+                fontSize: 19,
+                color: Color(0xff33415c),
+                fontWeight: FontWeight.normal,
+                fontFamily: 'SourceSansPro',
+              ),
+            ),
+            elevation: 5,
+            backgroundColor: Color(0xfffefae0).withOpacity(0.89),
+            padding: EdgeInsets.all(15),
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.only(bottom: 100, left: 20, right: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          )
+      );
       } on FirebaseAuthException catch(e){
       setState(() {
         errormessage = e.message!;
@@ -130,7 +151,6 @@ class _SignUpState extends State<SignUp> {
                         onPressed: (){
                           if (_signUpKey.currentState!.validate()){
                             register();
-                            // validateEmail;
                             if(_mailError_txt == null){
                               Navigator.push(
                                   context,

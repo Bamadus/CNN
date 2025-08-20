@@ -10,7 +10,7 @@ class AuthService{
 
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
 
-  Future<UserCredential> signIn({
+  Future<UserCredential> login({
     required String email,
     required String password,
 }) async{

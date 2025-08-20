@@ -67,6 +67,7 @@ class _NewsPageState extends State<NewsPage> {
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 100,
+          leading: Container(),
           bottom: const TabBar(
             indicatorColor: Color(0xff0066FF),
             tabs: [

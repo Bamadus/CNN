@@ -1,7 +1,9 @@
 import 'package:cnn/features/presentation/routes/signUp.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cnn/features/presentation/News/news.dart';
+import '../../../data/auth/auth_service.dart';
 import '../widget/login_abst/login_abstraction.dart';
 
 class Login_screen extends StatefulWidget{
@@ -18,7 +20,7 @@ class _Login_screenState extends State<Login_screen> {
   final _passwrdController = TextEditingController();
   String? _mailError_txt = "This field is required.";
   String? _passwordError_txt;
-
+  String errormessage= '';
 
   void _validateInput() {
     setState((){
@@ -49,6 +51,60 @@ class _Login_screenState extends State<Login_screen> {
     }
   }
 
+  Future<void> login() async {
+    try{
+      await authService.value.login(
+          email: _emailController.text,
+          password: _passwrdController.text
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "Login Successful...",
+              style: TextStyle(
+                fontSize: 19,
+                color: Color(0xff33415c),
+                fontWeight: FontWeight.normal,
+                fontFamily: 'SourceSansPro',
+              ),
+            ),
+            elevation: 5,
+            backgroundColor: Color(0xfffefae0).withOpacity(0.89),
+            padding: EdgeInsets.all(15),
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.only(bottom: 100, left: 20, right: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          )
+      );
+      Navigator.pop(context);
+      Navigator.push(context, MaterialPageRoute(builder: (context)=> NewsPage()));
+    } on FirebaseAuthException catch(e){
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+                e.message.toString(),
+              style: TextStyle(
+                fontSize: 19,
+                color: Color(0xff33415c),
+                fontWeight: FontWeight.normal,
+                fontFamily: 'SourceSansPro',
+              ),
+            ),
+            elevation: 5,
+            backgroundColor: Color(0xfffefae0).withOpacity(0.89),
+            padding: EdgeInsets.all(15),
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.only(bottom: 100, left: 20, right: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+          )
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,95 +145,87 @@ class _Login_screenState extends State<Login_screen> {
                               child: Form(
                                 key: _loginKey,
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                                child: Stack(
-                                    children: [Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(height: 15,),
-                                        // Text("Login", style: TextStyle(fontSize: 24)),
-                                        user_Gate.userTextFormField(
-                                          controller: _emailController,
-                                          hintText: 'news@gmail.com',
-                                          errorText: _mailError_txt,
-                                          labelText: "Email:",
-                                          validator: (v){
-                                            if(v!.isEmpty){
-                                              return "This field is Required";
-                                            }else{
-                                              return null;
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(height: 15,),
+                                    // Text("Login", style: TextStyle(fontSize: 24)),
+                                    user_Gate.userTextFormField(
+                                      controller: _emailController,
+                                      hintText: 'news@gmail.com',
+                                      errorText: _mailError_txt,
+                                      labelText: "Email:",
+                                      validator: (v){
+                                        if(v!.isEmpty){
+                                          return "This field is Required";
+                                        }else{
+                                          return null;
+                                        }
+                                      },
+                                      enable: true,
+                                      maxLines: 1,
+                                      maxLength: 59,
+                                      textInputType: TextInputType.emailAddress,
+                                      keyboardType: TextInputType.emailAddress,
+                                    ),
+                                    user_Gate.userTextFormField(
+                                      controller: _passwrdController,
+                                      hintText: 'password',
+                                      errorText: _passwordError_txt,
+                                      labelText: "Password:",
+                                      validator: (v){
+                                        if(v!.isEmpty){
+                                          return "This field is required";
+                                        }else{
+                                          return null;
+                                        }
+                                      },
+                                      keyboardType: TextInputType.visiblePassword,
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: TextButton(onPressed: (){
+                                      //   Loading...
+                                      }, child: Text('Forgot Password?',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Color(0xff33415c),
+                                          fontWeight: FontWeight.bold,
+                                          fontStyle: FontStyle.italic,
+                                          fontFamily: 'SourceSansPro',
+                                        ),
+                                      )),
+                                    ),
+                                    SizedBox(height: 45),
+                                    Container(
+                                      height: 115,
+                                      width: 235,
+                                      padding: EdgeInsets.only(bottom: 21,top: 15,left: 15, right: 15),
+                                      child: ElevatedButton(
+                                        onPressed:(){
+                                          if(_loginKey.currentState!.validate()){
+                                            login();
                                             }
                                           },
-                                          enable: true,
-                                          maxLines: 1,
-                                          maxLength: 59,
-                                          textInputType: TextInputType.emailAddress,
-                                          keyboardType: TextInputType.emailAddress,
-                                        ),
-                                        user_Gate.userTextFormField(
-                                          controller: _passwrdController,
-                                          hintText: 'password',
-                                          errorText: _passwordError_txt,
-                                          labelText: "Password:",
-                                          validator: (v){
-                                            if(v!.isEmpty){
-                                              return "This field is required";
-                                            }else{
-                                              return null;
-                                            }
-                                          },
-                                          keyboardType: TextInputType.visiblePassword,
-                                        ),
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          child: TextButton(onPressed: (){
-                                          //   Loading...
-                                          }, child: Text('Forgot Password?',
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: Color(0xff33415c),
-                                              fontWeight: FontWeight.bold,
-                                              fontStyle: FontStyle.italic,
-                                              fontFamily: 'SourceSansPro',
-                                            ),
-                                          )),
-                                        ),
-                                        SizedBox(height: 45),
-                                        Container(
-                                          height: 115,
-                                          width: 235,
-                                          padding: EdgeInsets.only(bottom: 21,top: 15,left: 15, right: 15),
-                                          child: ElevatedButton(
-                                            onPressed: (){
-                                              if (_loginKey.currentState!.validate()){
-                                                _validateInput();
-                                                validateEmail();
-                                                if(_mailError_txt == null && _passwordError_txt == null){
-                                                  Navigator.pop(context);
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> NewsPage()));
-                                                }
-                                                // Navigator.pushNamed(context, '/news');
-                                              }
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              foregroundColor: Colors.white,
-                                              shadowColor:Color(0xffb6ccfe),
-                                              textStyle: TextStyle(
-                                                fontSize: 45,
-                                                fontWeight: FontWeight.bold,
-                                                fontStyle: FontStyle.italic,
-                                                fontFamily: 'SourceSansPro',
-                                              ),
-                                              backgroundColor: Color(0xff33415c),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(8),
-                                              ),
-                                            ),
-                                            child: Text("Login"),
+                                        style: ElevatedButton.styleFrom(
+                                          foregroundColor: Colors.white,
+                                          shadowColor:Color(0xffb6ccfe),
+                                          textStyle: TextStyle(
+                                            fontSize: 45,
+                                            fontWeight: FontWeight.bold,
+                                            fontStyle: FontStyle.italic,
+                                            fontFamily: 'SourceSansPro',
+                                          ),
+                                          backgroundColor: Color(0xff33415c),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
                                           ),
                                         ),
-                                      ],
-                                    ),]
+                                        child: Text("Login"),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             )),
