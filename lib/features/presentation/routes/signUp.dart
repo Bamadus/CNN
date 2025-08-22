@@ -49,7 +49,7 @@ class _SignUpState extends State<SignUp> {
               ),
             ),
             elevation: 5,
-            backgroundColor: Color(0xfffefae0).withOpacity(0.89),
+            backgroundColor: Color(0xffedf6f9).withOpacity(0.89),
             padding: EdgeInsets.all(15),
             behavior: SnackBarBehavior.floating,
             margin: EdgeInsets.only(bottom: 100, left: 20, right: 20),
