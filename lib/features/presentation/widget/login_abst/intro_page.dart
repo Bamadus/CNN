@@ -62,23 +62,14 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
           Expanded(
             child: Center(
               child: SizedBox(
-                height: 250,
-                width: 150,
+                height: 550,
+                width: 550,
                 child: Column(
                   children: [
-                    // Image.asset(
-                    //   "assets/images/.png",
-                    //   height: animation.value * 300,
-                    //   width: animation.value * 300,
-                    // ),
-                    SizedBox(height: animation.value * 10),
-                    Text("Welcome to BaMaDuS!!!",
-                      style: TextStyle(
-                        fontFamily: 'SourceSansPro',
-                        color: Color(0xff33415c),
-                        fontSize: 27,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Image.asset(
+                      "assets/Icons/Logo_idea_.png",
+                      height: animation.value * 300,
+                      width: animation.value * 400,
                     ),
                   ],
                 )

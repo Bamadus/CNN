@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cnn/domain/models/news.dart';
 import 'package:cnn/data/services/api_services.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../bloc/bookmark_button.dart';
 import '../setting/bookmark_page.dart';
@@ -22,6 +23,8 @@ class _NewsPageState extends State<NewsPage> {
   final IconData active_like = Icons.thumb_up;
   final IconData Unselected_bookmark = Icons.bookmark_outline_outlined;
   final IconData active_bookmark = Icons.bookmark;
+
+  final User? user = FirebaseAuth.instance.currentUser;
 
   // Widget BaseLine_Icon() {
   //   return Padding(
@@ -63,124 +66,164 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        body: isLoading
-            ? Center(child: CircularProgressIndicator())
-            : Column(
-          mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ListView.builder(
-                    itemCount: news.length,
-                    itemBuilder: (context, index) {
-                      final newsitem = news[index];
-                      return Card(
-                        child: SizedBox(
-                          height: 160,
-                          child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        leading: Container(
+            margin: EdgeInsets.only(left: 15),
+            width: 42,
+            height: 39,
+            decoration: ShapeDecoration(
+                color:const Color(0xffF0F0F0),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(31)
+                )),
+            child: Image.asset('assets/Icons/Logo_idea_.png',scale: 1,)
+        ),
+        title: Row(
+          children:[
+            Text(
+              '${user?.displayName}, '??'User',
+              style: TextStyle(
+                fontSize: 19,
+                color: Color(0xff33415c),
+                fontWeight: FontWeight.w900,
+                fontFamily: 'SourceSansPro',
+              ),
+            )
+          ]
+        ),
+      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: news.length,
+              itemBuilder: (context, index) {
+                final newsitem = news[index];
+                return Card(
+                  color: Color(0xffcccccc),
+                  child: SizedBox(
+                    height: 230,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 25,
+                          child: Container(
+                              alignment: Alignment.topLeft,
+                              padding: EdgeInsets.only(left: 15),
+                              child: Row(
                             children: [
-                              SizedBox(
-                                height: 25,
-                                child: Container(
-                                    alignment: Alignment.topLeft,
-                                    padding: EdgeInsets.only(left: 15),
-                                    child: Row(
-                                  children: [
-                                    Icon(Icons.person),
-                                    SizedBox(width: 5,),
-                                    Text(newsitem.category.toString()),
-                                  ],
-                                )),
-                              ),
-                              Expanded(
-                                child: ListTile(
-                                  // contentPadding: EdgeInsets.only(left: 15, top: 5),
-                                  // leading: Text(newsitem.category.toString()),
-                                  title: InkWell(
-                                    // onDoubleTap: Loading... ,
-                                      child: Text(newsitem.headline.toString())),
-                                  subtitle: Text(
-                                    DateFormat(
-                                      'EEEE,MMM d,y'
-                                    ).format(newsitem.datetime!),
-                                  ),
-                                  trailing: newsitem.image != null
-                                      ? Container(
-                                    margin: EdgeInsets.only(right: 5),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                          ),
-                                        height: 115,
-                                        // color: Colors.red,
-                                        child: Image.network(
-                                            newsitem.image!,
-                                            width: 115,
-                                            fit: BoxFit.fill,
-                                                                        ),
-                                      )
-                                      : null,
-                                  dense: true,
+                              Icon(Icons.person),
+                              SizedBox(width: 5,),
+                              Text(
+                                  newsitem.category.toString().toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 19,
+                                  color: Color(0xff33415c),
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: 'SourceSansPro',
                                 ),
                               ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: 2,
-                                  ),
-                                  Container(margin: EdgeInsets.only(left: 15, top: 15),child: Text(newsitem.likes.toString())),
-                                  IconButton(onPressed: (){
-                                    setState(() {
-                                      newsitem.isLiked = !newsitem.isLiked;
-                                      if(newsitem.isLiked == true){
-                                        newsitem.likes++;
-                                      }else if(newsitem.isLiked == false){
-                                        newsitem.likes--;
-                                      }
-                                    });
-                                  },
-                                      icon: Icon(newsitem.isLiked == false ? Unselected_like : active_like),
-                                    color: newsitem.isLiked == false ? Colors.black45 :Colors.red,
-                                          ),
-                                  BookmarkButton(itemId: newsitem.headline.toString()),
-                                  // IconButton(onPressed: (){
-                                  //   setState(() {
-                                  //     newsitem.bookmark = !newsitem.bookmark;
-                                  //   });
-                                  // },
-                                  //   icon: Icon(newsitem.bookmark == false ? Unselected_bookmark : active_bookmark),
-                                  //   color: newsitem.bookmark == false ? Colors.black45 :Colors.black45,
-                                  // ),
-                                  Container(margin: EdgeInsets.only(left: 178),
-                                      child: PopupMenuButton<String>(
-                                        onSelected: (value) async{
-                                           if(value == 'bookmark'){
-                                             await Future.delayed(Duration(seconds: 1),()=> push());
-
-                                           }else if(value == 'delete'){
-                                             print('delete');
-                                           }
-                                        },
-                                          itemBuilder: (BuildContext context)=>[
-                                            PopupMenuItem(value: 'delete',child: Text('Delete')),
-                                            PopupMenuItem(value: 'bookmark',child: Text('Bookmarks'))
-
-                                          ]
-                                      ))
-                                ],
-                              )
                             ],
+                          )),
+                        ),
+                        Expanded(
+                          child: ListTile(
+                            // contentPadding: EdgeInsets.only(left: 15, top: 5),
+                            // leading: Text(newsitem.category.toString()),
+                            title: InkWell(
+                              // onDoubleTap: Loading... ,
+                                child: Text(
+                                    newsitem.headline.toString(),
+                                  style: TextStyle(
+                                    fontSize: 19,
+                                    color: Color(0xff33415c),
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'SourceSansPro',
+                                  ),
+                                )),
+                            subtitle: Text(
+                              DateFormat(
+                                'EEEE,MMM d,y'
+                              ).format(newsitem.datetime!),
+                              style: TextStyle(
+                                fontSize: 19,
+                                color: Color(0xff33415c),
+                                fontWeight: FontWeight.w300,
+                                fontFamily: 'SourceSansPro',
+                              ),
+                            ),
+                            trailing: newsitem.image != null
+                                ? Container(
+                              margin: EdgeInsets.only(right: 5),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                  height: 115,
+                                  // color: Colors.red,
+                                  child: Image.network(
+                                      newsitem.image!,
+                                      width: 115,
+                                      fit: BoxFit.fill,
+                                                                  ),
+                                )
+                                : null,
+                            dense: true,
                           ),
                         ),
-                      );
-                    },
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Container(margin: EdgeInsets.only(left: 15, top: 15),child: Text(newsitem.likes.toString())),
+                            IconButton(onPressed: (){
+                              setState(() {
+                                newsitem.isLiked = !newsitem.isLiked;
+                                if(newsitem.isLiked == true){
+                                  newsitem.likes++;
+                                }else if(newsitem.isLiked == false){
+                                  newsitem.likes--;
+                                }
+                              });
+                            },
+                                icon: Icon(newsitem.isLiked == false ? Unselected_like : active_like),
+                              color: newsitem.isLiked == false ? Colors.black45 :Colors.red,
+                                    ),
+                            BookmarkButton(itemId: newsitem.headline.toString()),
+                            // IconButton(onPressed: (){
+                            //   setState(() {
+                            //     newsitem.bookmark = !newsitem.bookmark;
+                            //   });
+                            // },
+                            //   icon: Icon(newsitem.bookmark == false ? Unselected_bookmark : active_bookmark),
+                            //   color: newsitem.bookmark == false ? Colors.black45 :Colors.black45,
+                            // ),
+                            Container(margin: EdgeInsets.only(left: 178),
+                                child: PopupMenuButton<String>(
+                                  onSelected: (value) async{
+                                     if(value == 'bookmark'){
+                                       await Future.delayed(Duration(seconds: 1),()=> push());
+
+                                     }else if(value == 'delete'){
+                                       print('delete');
+                                     }
+                                  },
+                                    itemBuilder: (BuildContext context)=>[
+                                      PopupMenuItem(value: 'delete',child: Text('Delete')),
+                                      PopupMenuItem(value: 'bookmark',child: Text('Bookmarks'))
+
+                                    ]
+                                ))
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-              ],
+                );
+              },
             ),
-      ),
     );
   }
 }

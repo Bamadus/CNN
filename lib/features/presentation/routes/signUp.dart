@@ -34,7 +34,8 @@ class _SignUpState extends State<SignUp> {
     try{
       await authService.value.createAccount(
           email: _mailController.text,
-          password: _passwordController.text
+          password: _passwordController.text,
+          username: _usernameController.text,
       );
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -151,13 +152,14 @@ class _SignUpState extends State<SignUp> {
                         onPressed: (){
                           if (_signUpKey.currentState!.validate()){
                             register();
-                            if(_mailError_txt == null){
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context)=> Login_screen())
-                              );
-                            }
+                            // if(_mailError_txt == null){
+                            //   Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //           builder: (context)=> Login_screen())
+                            //   );
+                            //   Navigator.pop(context);
+                            // }
                           }
                         },
                         style: ElevatedButton.styleFrom(
